@@ -1,9 +1,11 @@
 package id.ishom.movielist.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
 import id.ishom.movielist.R
 import id.ishom.movielist.adapter.MovieAdapter
 import id.ishom.movielist.dialog.AlertDialog
@@ -25,9 +27,24 @@ class MovieIndexActivity : AppCompatActivity(), MoviePresenter.View {
         adapter = MovieAdapter(this, displayedMovies)
         recyclerView.apply {
             adapter = this@MovieIndexActivity.adapter
-            layoutManager = LinearLayoutManager(this@MovieIndexActivity)
         }
+        setSupportActionBar(toolbar)
+
         presenter.getPopular()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_favorite, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_favorite -> {
+                startActivity(Intent(this, FavoriteMovieActivity::class.java))
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     fun onCategoryClicked(view: View) {
